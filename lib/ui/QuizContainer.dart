@@ -7,6 +7,8 @@ class QuizContainer extends StatefulWidget {
 }
 
 class _QuizContainerState extends State<QuizContainer> {
+  int _currentQuestionIndex = 0;
+
   List questionBank = [
     Question.name(
         "The U.S. Declarataion of Independence was adopted in 1775", true),
@@ -40,34 +42,107 @@ class _QuizContainerState extends State<QuizContainer> {
         backgroundColor: Colors.blueGrey,
       ),
       backgroundColor: Colors.blueGrey,
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Image.asset(
-                "images/flag.png",
-                width: 250,
-                height: 180,
-              ),
-            ),
-            Center(
-              child: Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                height: 120.0,
-                child: Text(
-                  questionBank[14].questionText,
-                  style: TextStyle(
-                    fontSize: 16.0,
+      body: Builder(
+        builder: (BuildContext context) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Image.asset(
+                    "images/flag.png",
+                    width: 250,
+                    height: 180,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Container(
+                    height: 120.0,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(14.0),
+                      border: Border.all(
+                        color: Colors.blueGrey.shade400,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          questionBank[_currentQuestionIndex].questionText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () => _checkAnswer(true, context),
+                      color: Colors.blueGrey.shade600,
+                      child: Text(
+                        "TRUE",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () => _checkAnswer(false, context),
+                      color: Colors.blueGrey.shade600,
+                      child: Text(
+                        "FALSE",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () => _nextQuestion(),
+                      color: Colors.blueGrey.shade700,
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+                Spacer(),
+              ],
             ),
-            Spacer(),
-          ],
-        ),
+          );
+        },
       ),
     );
+  }
+
+  _checkAnswer(bool choice, BuildContext context) {
+    final snackBar = SnackBar(
+      duration: Duration(milliseconds: 2000),
+      backgroundColor: choice == questionBank[_currentQuestionIndex].isCorrect
+          ? Colors.green.shade600
+          : Colors.red.shade600,
+      content: choice == questionBank[_currentQuestionIndex].isCorrect
+          ? Text(
+              "Correct Answer",
+              textAlign: TextAlign.center,
+            )
+          : Text(
+              "Wrong Answer",
+              textAlign: TextAlign.center,
+            ),
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  _nextQuestion() {
+    setState(() {
+      _currentQuestionIndex = (_currentQuestionIndex + 1) % questionBank.length;
+    });
   }
 }
