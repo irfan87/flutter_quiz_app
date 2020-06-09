@@ -11,7 +11,7 @@ class _QuizContainerState extends State<QuizContainer> {
 
   List questionBank = [
     Question.name(
-        "The U.S. Declarataion of Independence was adopted in 1775", true),
+        "The U.S. Declarataion of Independence was adopted in 1776", true),
     Question.name("The Supreme law of the land is Constitution", true),
     Question.name(
         "The two rights in the Declaration of Independence are Life and Pursuit of Happiness",
@@ -82,34 +82,53 @@ class _QuizContainerState extends State<QuizContainer> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    RaisedButton(
-                      onPressed: () => _checkAnswer(true, context),
-                      color: Colors.blueGrey.shade600,
-                      child: Text(
-                        "TRUE",
-                        style: TextStyle(color: Colors.white),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () => _checkAnswer(true, context),
+                            color: Colors.blueGrey.shade600,
+                            child: Icon(
+                              Icons.done,
+                              color: Colors.white,
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () => _checkAnswer(false, context),
+                            color: Colors.blueGrey.shade600,
+                            child: Icon(
+                              Icons.clear,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    RaisedButton(
-                      onPressed: () => _checkAnswer(false, context),
-                      color: Colors.blueGrey.shade600,
-                      child: Text(
-                        "FALSE",
-                        style: TextStyle(color: Colors.white),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () => _previousQuestion(),
+                            color: Colors.blueGrey.shade700,
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () => _nextQuestion(),
+                            color: Colors.blueGrey.shade700,
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    RaisedButton(
-                      onPressed: () => _nextQuestion(),
-                      color: Colors.blueGrey.shade700,
-                      child: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
                 Spacer(),
               ],
@@ -138,11 +157,23 @@ class _QuizContainerState extends State<QuizContainer> {
     );
 
     Scaffold.of(context).showSnackBar(snackBar);
+
+    _updateQuestion();
   }
 
-  _nextQuestion() {
+  _updateQuestion() {
     setState(() {
       _currentQuestionIndex = (_currentQuestionIndex + 1) % questionBank.length;
     });
+  }
+
+  _previousQuestion() {
+    setState(() {
+      _currentQuestionIndex = (_currentQuestionIndex - 1) % questionBank.length;
+    });
+  }
+
+  _nextQuestion() {
+    _updateQuestion();
   }
 }
