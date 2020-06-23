@@ -39,9 +39,9 @@ class _QuizContainerState extends State<QuizContainer> {
       appBar: AppBar(
         title: Text('True Citizen Quiz'),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey,
+        // backgroundColor: Colors.blueGrey,
       ),
-      backgroundColor: Colors.blueGrey,
+      // backgroundColor: Colors.blueGrey,
       body: Builder(
         builder: (BuildContext context) {
           return Container(
@@ -73,10 +73,6 @@ class _QuizContainerState extends State<QuizContainer> {
                         child: Text(
                           questionBank[_currentQuestionIndex].questionText,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
-                          ),
                         ),
                       ),
                     ),
